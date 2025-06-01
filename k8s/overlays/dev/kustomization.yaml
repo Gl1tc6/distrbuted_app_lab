@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: default
+
+resources:
+- ../../base
+- secrets.yaml
+- configmaps.yaml
+
+images:
+- name: frontend
+  newTag: v1
+- name: backend
+  newTag: v1
+- name: auth-service
+  newTag: v1
+
+replicas:
+- name: frontend
+  count: 2
+- name: backend
+  count: 3
+- name: auth-service
+  count: 2
+
+patchesStrategicMerge:
+- backend-dev-patch.yaml
